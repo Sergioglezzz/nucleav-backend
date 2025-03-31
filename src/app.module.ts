@@ -28,6 +28,7 @@ import { ConfigModule } from '@nestjs/config';
 import { User } from './users/user.entity';
 import { UsersModule } from './users/users.module';
 import { EmployeesModule } from './employees/employees.module';
+import { Employee } from './employees/employees.entity';
 
 @Module({
   imports: [
@@ -36,7 +37,8 @@ import { EmployeesModule } from './employees/employees.module';
       type: 'postgres',
       url: process.env.DATABASE_URL, // Railway proporciona esta variable
       synchronize: true, // ¡Solo para desarrollo! En producción usa migrations.
-      entities: [User], // O utiliza la opción de cargar todos los archivos en dist si lo prefieres
+      entities: [User, Employee], // O utiliza la opción de cargar todos los archivos en dist si lo prefieres
+      ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
     }),
     UsersModule,
     EmployeesModule,
