@@ -10,13 +10,19 @@ import { Employee } from './employees/employees.entity';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development',
+      envFilePath:
+        process.env.NODE_ENV === 'production'
+          ? '.env.production'
+          : '.env.development',
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       url: process.env.DATABASE_URL,
       synchronize: process.env.NODE_ENV !== 'production', // Solo en desarrollo
-      ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+      ssl:
+        process.env.NODE_ENV === 'production'
+          ? { rejectUnauthorized: false }
+          : false,
       autoLoadEntities: true,
       entities: [User, Employee],
     }),
@@ -24,5 +30,4 @@ import { Employee } from './employees/employees.entity';
     EmployeesModule,
   ],
 })
-export class AppModule { }
-
+export class AppModule {}

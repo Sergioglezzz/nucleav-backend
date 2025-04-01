@@ -42,6 +42,9 @@ $ npm run start:dev
 
 # production mode
 $ npm run start:prod
+
+# execute env development:
+$ NODE_ENV=development npm run start:dev
 ```
 
 ## Run tests
