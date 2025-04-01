@@ -20,8 +20,8 @@ import { CompanyModule } from './company/company.module';
     TypeOrmModule.forRoot({
       type: 'postgres',
       url: process.env.DATABASE_URL,
-      // synchronize: true, //temporal para railway
-      synchronize: process.env.NODE_ENV !== 'production', // Solo en desarrollo
+      synchronize: true, //temporal para railway
+      // synchronize: process.env.NODE_ENV !== 'production', // Solo en desarrollo
       ssl:
         process.env.NODE_ENV === 'production'
           ? { rejectUnauthorized: false }
