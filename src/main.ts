@@ -16,6 +16,7 @@ async function bootstrap() {
     origin: allowedOrigins, // Permitir todas las solicitudes (solo para desarrollo)
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders: 'Content-Type, Authorization',
+    credentials: true,
   });
 
   // Pipes de validación
