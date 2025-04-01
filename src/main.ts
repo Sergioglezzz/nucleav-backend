@@ -2,18 +2,21 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
-import * as cors from 'cors';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  const allowedOrigins =
+    process.env.NODE_ENV === 'production'
+      ? ['https://nucleav.com', 'https://www.nucleav.com'] // Solo producción
+      : ['http://localhost:3000']; // Desarrollo
+
   // Habilitar CORS
-  app.use(
-    cors({
-      origin: ['https://nucleav.com'], // Ajusta según tu dominio en Vercel
-      credentials: true, // Permitir envío de cookies y headers de autenticación
-    }),
-  );
+  app.enableCors({
+    origin: allowedOrigins, // Permitir todas las solicitudes (solo para desarrollo)
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: 'Content-Type, Authorization',
+  });
 
   // Pipes de validación
   app.useGlobalPipes(new ValidationPipe());

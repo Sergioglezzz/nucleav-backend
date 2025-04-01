@@ -1,10 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './users/user.entity';
+// import { User } from './users/user.entity';
 import { UsersModule } from './users/users.module';
 import { EmployeesModule } from './employees/employees.module';
-import { Employee } from './employees/employees.entity';
+// import { Employee } from './employees/employees.entity';
+import { CompanyModule } from './company/company.module';
+// import { Company } from './company/company.entity';
 
 @Module({
   imports: [
@@ -18,16 +20,18 @@ import { Employee } from './employees/employees.entity';
     TypeOrmModule.forRoot({
       type: 'postgres',
       url: process.env.DATABASE_URL,
+      // synchronize: true, //temporal para railway
       synchronize: process.env.NODE_ENV !== 'production', // Solo en desarrollo
       ssl:
         process.env.NODE_ENV === 'production'
           ? { rejectUnauthorized: false }
           : false,
       autoLoadEntities: true,
-      entities: [User, Employee],
+      // entities: [User, Employee, Company],
     }),
     UsersModule,
     EmployeesModule,
+    CompanyModule,
   ],
 })
 export class AppModule {}
