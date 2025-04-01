@@ -20,7 +20,10 @@ import { CompanyModule } from './company/company.module';
     TypeOrmModule.forRoot({
       type: 'postgres',
       url: process.env.DATABASE_URL,
-      synchronize: true, //temporal para railway
+      // En produccion debo desactivar syncrhronice y usar migrations
+      // synchronize: false, // Solo en producción
+      // synchronize: process.env.NODE_ENV !== 'production', // Solo en desarrollo
+      synchronize: true, //temporal para railway (solo en desarrollo)
       // synchronize: process.env.NODE_ENV !== 'production', // Solo en desarrollo
       ssl:
         process.env.NODE_ENV === 'production'
