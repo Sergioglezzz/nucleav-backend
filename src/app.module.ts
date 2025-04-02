@@ -1,12 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-// import { User } from './users/user.entity';
-import { UsersModule } from './users/users.module';
-import { EmployeesModule } from './employees/employees.module';
-// import { Employee } from './employees/employees.entity';
-import { CompanyModule } from './company/company.module';
-// import { Company } from './company/company.entity';
+import { UsersModule } from './users/user.module';
+import { EmployeesModule } from './employees/employee.module';
+import { CompanyModule } from './companies/company.module';
 
 @Module({
   imports: [
@@ -30,7 +27,6 @@ import { CompanyModule } from './company/company.module';
           ? { rejectUnauthorized: false }
           : false,
       autoLoadEntities: true,
-      // entities: [User, Employee, Company],
     }),
     UsersModule,
     EmployeesModule,
