@@ -19,6 +19,9 @@ async function bootstrap() {
     credentials: true,
   });
 
+  // Prefijo global para versionado
+  app.setGlobalPrefix('v1');
+
   // Pipes de validación
   app.useGlobalPipes(new ValidationPipe());
 
