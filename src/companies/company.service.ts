@@ -2,28 +2,39 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Company } from './company.entity';
+import { CreateCompanyDto } from './dto/create-company.dto';
+import { UpdateCompanyDto } from './dto/update-company.dto';
 
 @Injectable()
 export class CompanyService {
   constructor(
     @InjectRepository(Company)
-    private companyRepository: Repository<Company>,
+    private readonly companyRepository: Repository<Company>,
   ) {}
 
-  create(data: Partial<Company>) {
-    const company = this.companyRepository.create(data);
+  async create(createCompanyDto: CreateCompanyDto): Promise<Company> {
+    const company = this.companyRepository.create(createCompanyDto);
     return this.companyRepository.save(company);
   }
 
-  findAll() {
+  async findAll(): Promise<Company[]> {
     return this.companyRepository.find({ relations: ['creator'] });
   }
 
-  findOne(cif: string) {
-    return this.companyRepository.findOne({
+  async findOne(cif: string): Promise<Company> {
+    const company = await this.companyRepository.findOne({
       where: { cif },
       relations: ['creator'],
     });
+    if (!company) {
+      throw new Error(`Company with CIF ${cif} not found`);
+    }
+    return company;
+  }
+
+  async update(cif: string, updateCompanyDto: UpdateCompanyDto): Promise<Company> {
+    await this.companyRepository.update(cif, updateCompanyDto);
+    return this.findOne(cif);
   }
 
   async remove(cif: string): Promise<void> {
