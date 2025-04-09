@@ -5,6 +5,14 @@ import { UsersModule } from './users/user.module';
 import { EmployeesModule } from './employees/employee.module';
 import { CompanyModule } from './companies/company.module';
 import { PayrollModule } from './payrolls/payroll.module';
+import { ProjectModule } from './projects/project.module';
+import { EventModule } from './events/event.module';
+import { MaterialModule } from './materials/material.module';
+import { MaterialAssignedModule } from './material_assigned/material-assigned.module';
+import { EventAssignedModule } from './event_assigned/event-assigned.module';
+import { ProjectEmployeeModule } from './project_employee/project-employee.module';
+import { ProjectMaterialModule } from './project_material/project-material.module';
+import { ProjectCompanyCollaboratorModule } from './project_company_collaborator/project-company-collaborator.module';
 
 @Module({
   imports: [
@@ -33,6 +41,14 @@ import { PayrollModule } from './payrolls/payroll.module';
     EmployeesModule,
     CompanyModule,
     PayrollModule,
+    ProjectModule,
+    EventModule,
+    MaterialModule,
+    MaterialAssignedModule,
+    EventAssignedModule,
+    ProjectEmployeeModule,
+    ProjectMaterialModule,
+    ProjectCompanyCollaboratorModule,
   ],
 })
 export class AppModule {}
