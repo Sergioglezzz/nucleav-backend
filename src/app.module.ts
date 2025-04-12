@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from './login/auth.module';
 import { UsersModule } from './users/user.module';
 import { EmployeesModule } from './employees/employee.module';
 import { CompanyModule } from './companies/company.module';
@@ -37,6 +38,7 @@ import { ProjectCompanyCollaboratorModule } from './project_company_collaborator
           : false,
       autoLoadEntities: true,
     }),
+    AuthModule,
     UsersModule,
     EmployeesModule,
     CompanyModule,
