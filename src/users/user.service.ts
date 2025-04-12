@@ -13,8 +13,10 @@ export class UserService {
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
-    const newUser = this.userRepository.create(createUserDto);
-    return this.userRepository.save(newUser);
+const newUser = this.userRepository.create({
+    ...createUserDto,
+    role: 'user', // asignamos siempre "user" al registrar
+  });    return this.userRepository.save(newUser);
   }
 
   async findAll(): Promise<User[]> {
