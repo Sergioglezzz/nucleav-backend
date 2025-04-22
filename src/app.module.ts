@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthModule } from './login/auth.module';
+import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/user.module';
 import { EmployeesModule } from './employees/employee.module';
 import { CompanyModule } from './companies/company.module';
