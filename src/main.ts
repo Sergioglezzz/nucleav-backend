@@ -1,7 +1,8 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
+import { JwtAuthGuard } from './auth/jwt-auth.guard';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -21,6 +22,8 @@ async function bootstrap() {
 
   // Prefijo global para versionado
   app.setGlobalPrefix('v1');
+
+  app.useGlobalGuards(new JwtAuthGuard(new Reflector()));
 
   // Pipes de validación
   app.useGlobalPipes(new ValidationPipe());
