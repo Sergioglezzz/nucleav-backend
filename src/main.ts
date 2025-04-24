@@ -8,14 +8,15 @@ import * as bodyParser from 'body-parser'; // 👈 Importación necesaria
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(bodyParser.json());
+
   const allowedOrigins =
-    process.env.NODE_ENV === 'production'
+
+  process.env.NODE_ENV === 'production'
       ? ['https://nucleav.com', 'https://www.nucleav.com']
       : ['http://localhost:3000'];
 
-  // 👇 Añadir parsers para JSON y x-www-form-urlencoded
-  app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({ extended: true }));
 
   // CORS
   app.enableCors({
