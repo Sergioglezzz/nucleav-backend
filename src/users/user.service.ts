@@ -11,7 +11,7 @@ export class UserService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-  ) { }
+  ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
     const salt = await bcrypt.genSalt(10);
@@ -35,6 +35,28 @@ export class UserService {
     if (!user) {
       throw new Error(`User with id ${id} not found`);
     }
+    return user;
+  }
+
+  async findById(id: string): Promise<User> {
+    const user = await this.userRepository.findOne({
+      where: { id: Number(id) },
+      select: {
+        id: true,
+        name: true,
+        lastname: true,
+        username: true,
+        email: true,
+        role: true,
+        profile_image_url: true,
+        phone: true,
+      },
+    });
+
+    if (!user) {
+      throw new Error(`User with id ${id} not found`);
+    }
+
     return user;
   }
 

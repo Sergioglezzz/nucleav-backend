@@ -12,6 +12,8 @@ import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 import { Public } from './decorators/public.decorator';
+import { UserService } from '../users/user.service';
+import { User } from '../users/user.entity';
 export interface JwtPayload {
   id: string;
   email: string;
@@ -19,7 +21,10 @@ export interface JwtPayload {
 }
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly userService: UserService,
+  ) {}
 
   @Public()
   @Post('login')
@@ -33,10 +38,11 @@ export class AuthController {
     return this.authService.register(registerDto);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get('me')
-  getMe(@Request() req: ExpressRequest): JwtPayload {
-    return req.user as JwtPayload;
+  @UseGuards(JwtAuthGuard)
+  async getMe(@Request() req: ExpressRequest): Promise<User> {
+    const userId = (req.user as JwtPayload).id;
+    return this.userService.findById(userId);
   }
 
   @Public()
