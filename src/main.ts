@@ -3,37 +3,44 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
+import * as bodyParser from 'body-parser'; // 👈 Importación necesaria
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const allowedOrigins =
     process.env.NODE_ENV === 'production'
-      ? ['https://nucleav.com', 'https://www.nucleav.com'] // Solo producción
-      : ['http://localhost:3000']; // Desarrollo
+      ? ['https://nucleav.com', 'https://www.nucleav.com']
+      : ['http://localhost:3000'];
 
-  // Habilitar CORS
+  // 👇 Añadir parsers para JSON y x-www-form-urlencoded
+  app.use(bodyParser.json());
+  app.use(bodyParser.urlencoded({ extended: true }));
+
+  // CORS
   app.enableCors({
-    origin: allowedOrigins, // Permitir todas las solicitudes (solo para desarrollo)
+    origin: allowedOrigins,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders: 'Content-Type, Authorization',
     credentials: true,
   });
 
-  // Prefijo global para versionado
+  // Prefijo global
   app.setGlobalPrefix('v1');
 
+  // Guard global
   app.useGlobalGuards(new JwtAuthGuard(new Reflector()));
 
   // Pipes de validación
   app.useGlobalPipes(new ValidationPipe());
 
-  // Configuración Swagger (opcional para documentación)
+  // Swagger
   const config = new DocumentBuilder()
     .setTitle('Demo API')
     .setDescription('API de prueba para la demo de conexión')
     .setVersion('1.0')
     .build();
+
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('swagger', app, document);
 
