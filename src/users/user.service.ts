@@ -11,16 +11,13 @@ export class UserService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-  ) {}
+  ) { }
 
   async create(createUserDto: CreateUserDto): Promise<User> {
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(createUserDto.password, salt);
 
     const newUser = this.userRepository.create({
       ...createUserDto,
-      role: 'user', // asignamos siempre "user" al registrar
-      password: hashedPassword, // Encriptar password
+      role: 'user',
     });
 
     return this.userRepository.save(newUser);
