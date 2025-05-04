@@ -15,7 +15,7 @@ export class AuthService {
   constructor(
     private userService: UserService,
     private jwtService: JwtService,
-  ) {}
+  ) { }
 
   async login(loginDto: LoginDto) {
     const user = await this.userService.findByEmail(loginDto.email);
@@ -30,12 +30,21 @@ export class AuthService {
       role: user.role,
     };
 
+    // Filtrar password antes de devolver el usuario
+    const { password, ...safeUser } = user;
+
     return {
-      access_token: this.jwtService.sign(payload),
-      user_id: user.id,
-      user_role: user.role,
+      accessToken: this.jwtService.sign(payload),
+      user: {
+        id: safeUser.id,
+        name: `${safeUser.name} ${safeUser.lastname}`,
+        email: safeUser.email,
+        role: safeUser.role,
+        profile_image_url: safeUser.profile_image_url ?? null,
+      },
     };
   }
+
 
   async register(registerDto: RegisterDto) {
     const existingUser = await this.userService.findByEmail(registerDto.email);
