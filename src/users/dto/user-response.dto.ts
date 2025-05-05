@@ -5,6 +5,7 @@ export class UserResponseDto {
   username: string;
   email: string;
   role: string;
+  profession?: string | null;
   phone: string;
   profile_image_url: string | null;
   bio: string | null;

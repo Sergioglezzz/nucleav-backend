@@ -29,6 +29,9 @@ export class User {
   @Column()
   role: string;
 
+  @Column({ nullable: true })
+  profession: string;
+
   @Column()
   phone: string;
 
