@@ -2,6 +2,9 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { CompanyService } from './company.service';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
+import { UseGuards, Req } from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { Request } from 'express';
 import { Company } from './company.entity';
 
 @Controller('companies')
@@ -9,8 +12,16 @@ export class CompanyController {
   constructor(private readonly companyService: CompanyService) {}
 
   @Post()
-  create(@Body() createCompanyDto: CreateCompanyDto): Promise<Company> {
-    return this.companyService.create(createCompanyDto);
+  @UseGuards(JwtAuthGuard)
+  create(
+    @Body() createCompanyDto: CreateCompanyDto,
+    @Req() req: Request
+  ): Promise<Company> {
+    const userId = req.user?.['id']; // o req.user?.sub si usas JWT estándar
+    if (!userId) {
+      throw new Error('User information is missing from request');
+    }
+    return this.companyService.create(createCompanyDto, userId);
   }
 
   @Get()

@@ -12,10 +12,15 @@ export class CompanyService {
     private readonly companyRepository: Repository<Company>,
   ) {}
 
-  async create(createCompanyDto: CreateCompanyDto): Promise<Company> {
-    const company = this.companyRepository.create(createCompanyDto);
-    return this.companyRepository.save(company);
+  async create(dto: CreateCompanyDto, userId: number): Promise<Company> {
+    const newCompany = this.companyRepository.create({
+      ...dto,
+      creator: { id: userId },
+    });
+
+    return this.companyRepository.save(newCompany);
   }
+  
 
   async findAll(): Promise<Company[]> {
     return this.companyRepository.find({ relations: ['creator'] });
