@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Company } from './company.entity';
@@ -13,13 +13,20 @@ export class CompanyService {
   ) {}
 
   async create(dto: CreateCompanyDto, userId: number): Promise<Company> {
+    const existing = await this.companyRepository.findOne({ where: { cif: dto.cif } });
+
+    if (existing) {
+      throw new ConflictException('Ya existe una empresa con este CIF.');
+    }
+
     const newCompany = this.companyRepository.create({
       ...dto,
-      creator: { id: userId },
+      created_by: userId,
     });
 
     return this.companyRepository.save(newCompany);
   }
+  
   
 
   async findAll(): Promise<Company[]> {
