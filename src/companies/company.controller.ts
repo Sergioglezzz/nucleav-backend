@@ -35,12 +35,14 @@ export class CompanyController {
   }
 
   @Patch(':cif')
+  @UseGuards(JwtAuthGuard)
   update(
     @Param('cif') cif: string,
-    @Body() updateCompanyDto: UpdateCompanyDto,
+    @Body() updateCompanyDto: UpdateCompanyDto
   ): Promise<Company> {
-    return this.companyService.update(cif, updateCompanyDto);
+    return this.companyService.update(cif, updateCompanyDto)
   }
+  
 
   @Delete(':cif')
   remove(@Param('cif') cif: string): Promise<void> {
