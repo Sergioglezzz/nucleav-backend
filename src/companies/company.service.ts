@@ -1,4 +1,8 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Company } from './company.entity';
@@ -10,10 +14,12 @@ export class CompanyService {
   constructor(
     @InjectRepository(Company)
     private readonly companyRepository: Repository<Company>,
-  ) { }
+  ) {}
 
   async create(dto: CreateCompanyDto, userId: number): Promise<Company> {
-    const existing = await this.companyRepository.findOne({ where: { cif: dto.cif } });
+    const existing = await this.companyRepository.findOne({
+      where: { cif: dto.cif },
+    });
 
     if (existing) {
       throw new ConflictException('Ya existe una empresa con este CIF.');
@@ -26,8 +32,6 @@ export class CompanyService {
 
     return this.companyRepository.save(newCompany);
   }
-
-
 
   async findAll(): Promise<Company[]> {
     return this.companyRepository.find({ relations: ['creator'] });
@@ -45,13 +49,12 @@ export class CompanyService {
   }
 
   async update(cif: string, dto: UpdateCompanyDto): Promise<Company> {
-    const company = await this.companyRepository.findOneBy({ cif })
-    if (!company) throw new NotFoundException('Empresa no encontrada')
+    const company = await this.companyRepository.findOneBy({ cif });
+    if (!company) throw new NotFoundException('Empresa no encontrada');
 
-    Object.assign(company, dto)
-    return this.companyRepository.save(company)
+    Object.assign(company, dto);
+    return this.companyRepository.save(company);
   }
-
 
   async remove(cif: string): Promise<void> {
     await this.companyRepository.delete(cif);

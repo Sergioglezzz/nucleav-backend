@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { CompanyService } from './company.service';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
@@ -15,13 +23,13 @@ export class CompanyController {
   @UseGuards(JwtAuthGuard)
   create(
     @Body() createCompanyDto: CreateCompanyDto,
-    @Req() req: Request
+    @Req() req: Request,
   ): Promise<Company> {
-    const userId = req.user?.['id']; // o req.user?.sub si usas JWT estándar
+    const userId = (req.user as { id?: string })?.id; // o req.user?.sub si usas JWT estándar
     if (!userId) {
       throw new Error('User information is missing from request');
     }
-    return this.companyService.create(createCompanyDto, userId);
+    return this.companyService.create(createCompanyDto, Number(userId));
   }
 
   @Get()
@@ -38,11 +46,10 @@ export class CompanyController {
   @UseGuards(JwtAuthGuard)
   update(
     @Param('cif') cif: string,
-    @Body() updateCompanyDto: UpdateCompanyDto
+    @Body() updateCompanyDto: UpdateCompanyDto,
   ): Promise<Company> {
-    return this.companyService.update(cif, updateCompanyDto)
+    return this.companyService.update(cif, updateCompanyDto);
   }
-  
 
   @Delete(':cif')
   remove(@Param('cif') cif: string): Promise<void> {
