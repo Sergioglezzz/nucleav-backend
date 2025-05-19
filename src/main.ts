@@ -12,11 +12,9 @@ async function bootstrap() {
   app.use(bodyParser.json());
 
   const allowedOrigins =
-
-  process.env.NODE_ENV === 'production'
+    process.env.NODE_ENV === 'production'
       ? ['https://nucleav.com', 'https://www.nucleav.com']
       : ['http://localhost:3000'];
-
 
   // CORS
   app.enableCors({
