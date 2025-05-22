@@ -36,6 +36,9 @@ export class Material {
   @Column({ default: false })
   is_consumable: boolean;
 
+  @Column({ nullable: true })
+  image_url: string;
+
   @ManyToOne(() => Company, { nullable: true })
   @JoinColumn({ name: 'company_cif' })
   company?: Company;

@@ -30,6 +30,10 @@ export class CreateMaterialDto {
 
   @IsOptional()
   @IsString()
+  image_url?: string;
+
+  @IsOptional()
+  @IsString()
   company_cif?: string;
 
   @IsOptional()

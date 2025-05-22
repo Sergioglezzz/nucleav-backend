@@ -12,8 +12,8 @@ export class MaterialService {
     private readonly materialRepository: Repository<Material>,
   ) {}
 
-  async create(createMaterialDto: CreateMaterialDto): Promise<Material> {
-    const material = this.materialRepository.create(createMaterialDto);
+  async create(dto: CreateMaterialDto): Promise<Material> {
+    const material = this.materialRepository.create(dto);
     return this.materialRepository.save(material);
   }
 
@@ -32,8 +32,8 @@ export class MaterialService {
     return material;
   }
 
-  async update(id: number, updateMaterialDto: UpdateMaterialDto): Promise<Material> {
-    await this.materialRepository.update(id, updateMaterialDto);
+  async update(id: number, dto: UpdateMaterialDto): Promise<Material> {
+    await this.materialRepository.update(id, dto);
     return this.findOne(id);
   }
 
