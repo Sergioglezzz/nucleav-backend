@@ -14,6 +14,7 @@ import { EventAssignedModule } from './event_assigned/event-assigned.module';
 import { ProjectEmployeeModule } from './project_employee/project-employee.module';
 import { ProjectMaterialModule } from './project_material/project-material.module';
 import { ProjectCompanyCollaboratorModule } from './project_company_collaborator/project-company-collaborator.module';
+import { ProjectUserModule } from './project_user/project-user.module';
 
 @Module({
   imports: [
@@ -51,6 +52,7 @@ import { ProjectCompanyCollaboratorModule } from './project_company_collaborator
     ProjectEmployeeModule,
     ProjectMaterialModule,
     ProjectCompanyCollaboratorModule,
+    ProjectUserModule,
   ],
 })
 export class AppModule {}
