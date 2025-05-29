@@ -6,9 +6,12 @@ import {
   JoinColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
 import { Company } from '../companies/company.entity';
 import { User } from '../users/user.entity';
+import { ProjectMaterial } from '../project_material/project-material.entity';
+import { ProjectUser } from '../project_user/project-user.entity';
 
 export enum ProjectType {
   FILM = 'film',
@@ -60,6 +63,15 @@ export class Project {
 
   @Column({ default: false })
   is_collaborative: boolean;
+
+  @OneToMany(
+    () => ProjectMaterial,
+    (projectMaterial: ProjectMaterial) => projectMaterial.project,
+  )
+  projectMaterials: ProjectMaterial[];
+
+  @OneToMany(() => ProjectUser, (projectUser) => projectUser.project)
+  projectUsers: ProjectUser[];
 
   @CreateDateColumn()
   created_at: Date;

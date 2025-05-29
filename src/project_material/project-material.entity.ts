@@ -13,7 +13,9 @@ export class ProjectMaterial {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Project)
+  @ManyToOne(() => Project, (project) => project.projectMaterials, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'project_id' })
   project: Project;
 

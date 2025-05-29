@@ -12,12 +12,14 @@ import { Project } from '../projects/project.entity';
 import { User } from '../users/user.entity';
 
 @Entity()
-@Unique(['project_id', 'user_id']) // evita duplicados
+@Unique(['project_id', 'user_id'])
 export class ProjectUser {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Project, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Project, (project) => project.projectUsers, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'project_id' })
   project: Project;
 
